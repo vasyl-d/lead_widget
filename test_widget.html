@@ -1,0 +1,20 @@
+<!-- Тест загрузки виджета в другую страницу -->
+<html>
+    <head>
+    </head>
+    <body>
+        <h1> Test widget load</h1>
+        <!-- <div id="wrgsv" style="position: absolute; z-index:1000; bottom: 20px; right: 20px;"></div> -->
+        <script type="text/javascript">
+            (function() {
+                var script = document.createElement('script');
+                script.type = 'text/javascript'; script.async = true;
+                script.src = 'http://127.0.0.1:3000/new_widget.js';
+                script.id = 'wrgsv-widget';
+                script.setAttribute('data-widget-key', '237a1231fe9b4a13b66e5389598b9d85');
+                script.setAttribute('data-lead-type', '74157');
+                document.getElementsByTagName('head')[0].appendChild(script);
+            })();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,195 @@
+<html>
+  <head>
+    <style>
+input, textarea {
+  caret-color: red;
+}
+
+.container {
+  position: relative;
+  margin: 0 auto 0 auto;
+  width: 25em;
+  height: 30em;
+  border-radius: 1em;
+  padding: 1em;
+  box-sizing: border-box;
+  background: #ecf0f3;
+  box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+}
+
+#response {
+    position: relative;
+    z-index: 1001;
+    margin: 0 auto 0 auto;
+    width: 20em;
+    height: 3em;
+    padding: 1em;
+    font-size: 14px;
+    border-radius: 1em;
+    margin-top: 0.5em;
+    background: #ecf0f3;
+    color: brown;
+    box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+    display: none;
+}
+
+.brand-title {
+  margin-top: 10px;
+  font-weight: 900;
+  font-size: 1.8rem;
+  color: #1DA1F2;
+  letter-spacing: 1px;
+}
+
+textarea, caption, input, button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+caption {
+    padding-left: 3em;
+}
+
+input::placeholder {
+  color: gray;
+}
+
+input, textarea  {
+  background: #ecf0f3;
+  padding: 1em;
+  padding-left: 2em;
+  height: 3em;
+  font-size: 14px;
+  border-radius: 1em;
+  margin-top: 0.5em;
+  box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
+}
+
+button {
+  color: white;
+  margin-top: 20px;
+  background: #1DA1F2;
+  height: 3em;
+  border-radius: 1em;
+  cursor: pointer;
+  font-weight: 900;
+  box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+  transition: 0.5s;
+}
+
+button:hover {
+  box-shadow: none;
+}
+
+#description {
+    height: 6em;
+}
+    </style>
+       <script>
+        const BASE_URL = "https://api.remonline.app/";
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString); // doesn't work in IE, but who cares ;)
+        const API_KEY = urlParams.get("api_key") ? urlParams.get("api_key"): '237a1231fe9b4a13b66e5389598b9d85';
+        const LEADTYPE_ID = urlParams.get("lead_type") ? urlParams.get("lead_type") : 74157;
+        const AD_CAMPAIN_ID = urlParams.get("ad_compain") ? urlParams.get("ad_compain") : 345729;
+        
+        function closeResponse(){
+          let resp = document.getElementById("response");
+          resp.style.display = "none";
+        };
+
+        async function getToken(){
+          const url = BASE_URL + 'token/new?api_key=' + API_KEY;
+          const response = await fetch(url, {
+                method: 'GET', 
+                cors: "no-cors",
+                headers: {
+                  "Accept": "*/*",
+                }
+              })
+          return response.json();
+        }
+  
+        async function makeRequest(token){
+          const data = "contact_name="+document.forms["myForm"]["contact_name"].value+"&contact_phone="+document.forms["myForm"]["contact_phone"].value+
+                "&description="+encodeURI(document.forms["myForm"]["description"].value)+"&leadtype_id="+LEADTYPE_ID+"&ad_compain_id="+AD_CAMPAIN_ID+
+                "&token="+token;
+          const url = BASE_URL + "lead/";
+          const response = await fetch(url, {
+                method: "POST", 
+                cors: "no-cors",
+                headers: {
+                  "Accept": "*/*",
+                  "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: data // body data type must match "Content-Type" header
+              });
+          return response.json();
+        }
+              
+        function sendForm() {
+          if (! document.forms["myForm"].reportValidity()){
+            return false;
+          }
+          let x = document.forms["myForm"]["contact_name"].value;
+          let y = document.forms["myForm"]["contact_phone"].value;
+          if ( x == '' || y ==  '' ) {
+            document.getElementById('response').innerHTML = 'fill the form';
+            document.getElementById('response').style.display = "block";
+            return false;
+          }
+          getToken()
+            .then((json) => {
+                token = json.token; 
+                console.log(token);
+                makeRequest(token)
+                  .then((text)=>{
+                    document.getElementById('response').innerHTML = "Thank you for the feedback. Your message get number:" + text.data.id;
+                    document.getElementById('myForm').style.display = 'none';
+                    document.getElementById('response').style.display = "block";
+                    return true; 
+                  }).catch (err => {
+                    document.getElementById('response').innerHTML = "Post lead error: " + err;
+                    document.getElementById('response').style.display = "block";
+                    return false;
+                  })})
+            .catch(err => {
+                document.getElementById('response').innerHTML = 'Get token error';
+                document.getElementById('response').style.display = "block";
+                return false;            
+            });
+        }
+
+        </script>
+  </head>
+  <body>
+    <div class="container">
+    <h2>Test lead form</h2>
+    <form id="myForm" name="myForm">
+      <p>  
+        <caption for="contact_name">Name:</caption> 
+        <input id="contact_name" type="text" name="contact_name" placeholder="3 letter min" required minlength="3" maxlength="40">      
+      </p>
+      <p>
+        <caption for="contact_phone">Phone Number:</caption> <input id="contact_phone" type="tel" name="contact_phone" placeholder="+380" required minlength="8" maxlength="16" pattern="\d{8,16}"> 
+      </p>     
+      <p>
+        <caption for="description">Description:</caption>  <textarea id="description" type="textarea" name="description" placeholder="your message" form="myForm"> </textarea>
+      </p>  
+      <button type="button" onClick="sendForm()">Submit</button>
+    </form>
+    <p id="response" onclick="closeResponse();" > </p>
+    </div>
+ 
+  </body>
+</html>
+
+
+<!-- check an emailwith regex :
+const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
+let email = "example@example.com";
+let result = regex.test(email); -->
