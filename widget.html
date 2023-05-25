@@ -1,6 +1,24 @@
 <html>
   <head>
     <style>
+
+
+/* @media only screen and (min-width:800px) and (max-width:1023px) {
+:root {
+  font-size: 24pt;}
+} */
+
+:root {
+  font-size: 1rem;
+  --s_width: 90%;
+  --s_height: 90%;
+  --s_shadow: 0.3rem;
+  --s_name: "Name:";
+  --s_phone: "Phone:";
+  --s_description: "Description";
+  --s_title: "Query form";
+}
+
 input, textarea {
   caret-color: red;
 }
@@ -8,13 +26,13 @@ input, textarea {
 .container {
   position: relative;
   margin: 0 auto 0 auto;
-  width: 25em;
-  height: 30em;
+  width: var(--s_width);
+  height: var(--s_height);
   border-radius: 1em;
   padding: 1em;
   box-sizing: border-box;
   background: #ecf0f3;
-  box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+  box-shadow: var(--s_shadow) var(--s_shadow) var(--s_shadow) #cbced1, var(--s_shadow) var(--s_shadow) var(--s_shadow) white;
 }
 
 #response {
@@ -24,21 +42,21 @@ input, textarea {
     width: 20em;
     height: 3em;
     padding: 1em;
-    font-size: 14px;
+    font-size: 1em;
     border-radius: 1em;
     margin-top: 0.5em;
     background: #ecf0f3;
     color: brown;
-    box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+    box-shadow: var(--s_shadow) var(--s_shadow) var(--s_shadow) #cbced1, calc(-1*var(--s_shadow)) calc(-1*var(--s_shadow)) var(--s_shadow) white;
     display: none;
 }
 
 .brand-title {
-  margin-top: 10px;
+  margin-top: 0.8em;
   font-weight: 900;
   font-size: 1.8rem;
   color: #1DA1F2;
-  letter-spacing: 1px;
+  /* letter-spacing: 0.1em;s */
 }
 
 textarea, caption, input, button {
@@ -63,10 +81,10 @@ input, textarea  {
   padding: 1em;
   padding-left: 2em;
   height: 3em;
-  font-size: 14px;
+  font-size: 1em;
   border-radius: 1em;
   margin-top: 0.5em;
-  box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
+  box-shadow: inset var(--s_shadow) var(--s_shadow) var(--s_shadow) #cbced1, inset calc(-1*var(--s_shadow)) calc(-1*var(--s_shadow)) var(--s_shadow) white;
 }
 
 button {
@@ -85,10 +103,29 @@ button:hover {
   box-shadow: none;
 }
 
+#close-button {
+  z-index: 2001; 
+  width: 3em; 
+  height: 3em; 
+  position: absolute; 
+  top: 0.1em; right: 1em;}
+
 #description {
     height: 6em;
 }
-    </style>
+#name_cap::after {
+  content: attr(s_name);
+}
+#phone_cap::after {
+  content: attr(s_phone);
+}
+#desc_cap::after {
+  content: attr(s_desc);
+}
+#title_cap::after {
+ content: attr(s_title);
+}
+</style>
        <script>
         const BASE_URL = "https://api.remonline.app/";
         const queryString = window.location.search;
@@ -96,10 +133,12 @@ button:hover {
         const API_KEY = urlParams.get("api_key") ? urlParams.get("api_key"): '237a1231fe9b4a13b66e5389598b9d85';
         const LEADTYPE_ID = urlParams.get("lead_type") ? urlParams.get("lead_type") : 74157;
         const AD_CAMPAIN_ID = urlParams.get("ad_compain") ? urlParams.get("ad_compain") : 345729;
-        
+
+
         function closeResponse(){
           let resp = document.getElementById("response");
           resp.style.display = "none";
+          window.parent.postMessage('close', '*');
         };
 
         async function getToken(){
@@ -144,11 +183,11 @@ button:hover {
           }
           getToken()
             .then((json) => {
-                token = json.token; 
+                token = json?.token; 
                 console.log(token);
                 makeRequest(token)
                   .then((text)=>{
-                    document.getElementById('response').innerHTML = "Thank you for the feedback. Your message get number:" + text.data.id;
+                    document.getElementById('response').innerHTML = "Thank you for the feedback. Your message get number:" + text?.data?.id;
                     document.getElementById('myForm').style.display = 'none';
                     document.getElementById('response').style.display = "block";
                     return true; 
@@ -168,23 +207,39 @@ button:hover {
   </head>
   <body>
     <div class="container">
-    <h2>Test lead form</h2>
-    <form id="myForm" name="myForm">
-      <p>  
-        <caption for="contact_name">Name:</caption> 
-        <input id="contact_name" type="text" name="contact_name" placeholder="3 letter min" required minlength="3" maxlength="40">      
-      </p>
-      <p>
-        <caption for="contact_phone">Phone Number:</caption> <input id="contact_phone" type="tel" name="contact_phone" placeholder="+380" required minlength="8" maxlength="16" pattern="\d{8,16}"> 
-      </p>     
-      <p>
-        <caption for="description">Description:</caption>  <textarea id="description" type="textarea" name="description" placeholder="your message" form="myForm"> </textarea>
-      </p>  
-      <button type="button" onClick="sendForm()">Submit</button>
-    </form>
-    <p id="response" onclick="closeResponse();" > </p>
+      <h2 id="title_cap" class="brand-title"></h2>
+      <form name="myForm">
+        <p>  
+          <div id="name_cap" for="contact_name" name_text="Name:"></div> 
+          <input id="contact_name" type="text" name="contact_name" placeholder="3 letter min" required minlength="3" maxlength="40">      
+        </p>
+        <p>
+          <div id="phone_cap" for="contact_phone"></div> 
+          <input id="contact_phone" type="tel" name="contact_phone" placeholder="+380" required minlength="8" maxlength="16" pattern="\+\d{8,16}"> 
+        </p>
+        <!-- <p>
+          <caption for="contact_email">Email:</caption> <input id="contact_email" type="email" name="contact_email" placeholder="" required minlength="6" maxlength="20" pattern="\w{1,20}@\w{1,20}.\w{2,4}"> 
+        </p>         -->
+        <p>
+          <div id="desc_cap" for="description"></div>  
+          <textarea id="description" type="textarea" name="description" placeholder="your message" form="myForm"> </textarea>
+        </p>  
+        <button type="button" onClick="sendForm()">Submit</button>
+      </form>
+      <p id="response" onclick="closeResponse();" > </p>
+      <button id="close-button" onclick="window.parent.postMessage('close', '*')">x</button>
     </div>
- 
+    <script>
+        const S_NAME = urlParams.get("s_name")? urlParams.get("s_name") : 'Name:';
+        const S_PHONE = urlParams.get("s_phone")? urlParams.get("s_phone") : 'Phone:';
+        const S_DESC = urlParams.get("s_desc")? urlParams.get("s_desc") : 'Description:';
+        const S_TITLE = urlParams.get("s_title")? urlParams.get("s_title") : 'Query form:';
+
+        document.getElementById('name_cap')?.setAttribute('s_name', S_NAME);
+        document.getElementById('phone_cap')?.setAttribute('s_phone', S_PHONE);
+        document.getElementById('desc_cap')?.setAttribute('s_desc', S_DESC);
+        document.getElementById('title_cap')?.setAttribute('s_title', S_TITLE);
+    </script>
   </body>
 </html>
 
