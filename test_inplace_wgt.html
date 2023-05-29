@@ -1,250 +1,53 @@
 <html>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <head>
-    <style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <head>
+        <style>
+        @media (min-width: 768px) and (max-width: 1024px) {
+            :root {
+              font-size:18pt;
+            }
+          }
+        @media (max-width: 767px) {
+            :root {
+              font-size:20pt;
+            }
+          }
+        </style>
+    </head>
+    <body>
+        <h1>RO Lead Form</h1>
+        <script type="text/javascript">
+            //скрипт размещаем в body
+            (function() {
+                var script = document.createElement('script');
+                script.type = 'text/javascript'; script.async = true;
+                script.src = 'https://vasylD.pythonanywhere.com/static/ROwidget/inline_widget.js';
+                script.id = 'wrgsv-widget';
+                script.setAttribute('data-widget-key', '237a1231fe9b4a13b66e5389598b9d85');
+                script.setAttribute('data-lead-type', '74157');
+                script.setAttribute('data-ad-compain', '345729');
+                script.setAttribute('data-s-title', 'Запрос на услуги');
+                script.setAttribute('data-s-name', 'Имя:');
+                script.setAttribute('data-s-phone', 'Телефон:');
+                script.setAttribute('data-s-desc', 'Ваш вопрос:');
+                script.setAttribute('data-s-submit', 'Отправить:');
+                document.getElementsByTagName('head')[0].appendChild(script);
+            })();
+            </script>
+        <!--Место для размещения виджета, если нужна позиция не по центру - настраивать тут ;) -->
+        <div id="wrgsv" style="z-index: 1000; position: absolute; left:50%; top: 50%; transform: translate(-50%, -50%);"></div>
+         <!--Если наи нужна кнопка для октытия формы: -->
+        <button onclick="wrgsv.init('wrgsv')" style="display:block;  width:15rem; height:3rem; border-radius:0.5rem; background-color:lightgreen; border: 0.1 solid lightgrey;">
+        <p>Создать обращение</p>
+        </button>
 
-
-/* @media only screen and (min-width:800px) and (max-width:1023px) {
-:root {
-  font-size: 24pt;}
-} */
-
-:root {
-  /*font-size: 1em;*/
-  --s_width: 90%;
-  --s_height: 90%;
-  --s_shadow: 0.3em;
-  --s_name: "Name:";
-  --s_phone: "Phone:";
-  --s_description: "Description";
-  --s_title: "Query form";
-}
-
-input, textarea {
-  caret-color: red;
-}
-
-.container {
-  position: relative;
-  margin: 0 auto 0 auto;
-  width: var(--s_width);
-  height: var(--s_height);
-  border-radius: 1em;
-  padding: 1em;
-  box-sizing: border-box;
-  background: #ecf0f3;
-  box-shadow: var(--s_shadow) var(--s_shadow) var(--s_shadow) #cbced1, var(--s_shadow) var(--s_shadow) var(--s_shadow) white;
-}
-
-#response {
-    position: relative;
-    z-index: 1001;
-    margin: 0 auto 0 auto;
-    width: 20em;
-    height: 3em;
-    padding: 1em;
-    font-size: 1em;
-    border-radius: 1em;
-    margin-top: 0.5em;
-    background: #ecf0f3;
-    color: brown;
-    box-shadow: var(--s_shadow) var(--s_shadow) var(--s_shadow) #cbced1, calc(-1*var(--s_shadow)) calc(-1*var(--s_shadow)) var(--s_shadow) white;
-    display: none;
-}
-
-.brand-title {
-  margin-top: 0.8em;
-  font-weight: 900;
-  font-size: 1.8rem;
-  color: #1DA1F2;
-  /* letter-spacing: 0.1em;s */
-}
-
-textarea, caption, input, button {
-  display: block;
-  width: 100%;
-  padding: 0;
-  border: none;
-  outline: none;
-  box-sizing: border-box;
-}
-
-caption {
-    padding-left: 3em;
-}
-
-input::placeholder {
-  color: gray;
-}
-
-input, textarea  {
-  background: #ecf0f3;
-  padding: 1em;
-  padding-left: 2em;
-  height: 3em;
-  font-size: 1em;
-  border-radius: 1em;
-  margin-top: 0.5em;
-  box-shadow: inset var(--s_shadow) var(--s_shadow) var(--s_shadow) #cbced1, inset calc(-1*var(--s_shadow)) calc(-1*var(--s_shadow)) var(--s_shadow) white;
-}
-
-button {
-  color: white;
-  margin-top: 20px;
-  background: #1DA1F2;
-  height: 3em;
-  border-radius: 1em;
-  cursor: pointer;
-  font-weight: 900;
-  box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
-  transition: 0.5s;
-}
-
-button:hover {
-  box-shadow: none;
-}
-
-#close-button {
-  z-index: 2001;
-  width: 3em;
-  height: 3em;
-  position: absolute;
-  top: 0.1em; right: 1em;}
-
-#description {
-    height: 6em;
-}
-#name_cap::after {
-  content: attr(s_name);
-}
-#phone_cap::after {
-  content: attr(s_phone);
-}
-#desc_cap::after {
-  content: attr(s_desc);
-}
-#title_cap::after {
- content: attr(s_title);
-}
-</style>
-       <script>
-        const BASE_URL = "https://api.remonline.app/";
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString); // doesn't work in IE, but who cares ;)
-        const API_KEY = urlParams?.get("api_key") || '';
-        const LEADTYPE_ID = urlParams?.get("lead_type") ? "&leadtype_id=" + urlParams?.get("lead_type") : '';
-        const AD_CAMPAIN_ID = urlParams?.get("ad_compain") ? "&ad_compain_id=" + urlParams?.get("ad_compain") : '';
-
-        function closeResponse(){
-          window.parent.postMessage('close', '*');
-        };
-
-        async function getToken(){
-          const url = BASE_URL + 'token/new?api_key=' + API_KEY;
-          const response = await fetch(url, {
-                method: 'GET',
-                cors: "no-cors",
-                headers: {
-                  "Accept": "*/*",
+         <script>
+            //если надо открыть форму сразу, без нажатия кнопки
+            document.onreadystatechange = function(){
+                    if(document.readyState === 'complete'){
+                    wrgsv.init('wrgsv');
+                    }
                 }
-              })
-          return response.json();
-        }
-
-        async function makeRequest(token){
-          const data = "contact_name="+document.forms["myForm"]["contact_name"].value+"&contact_phone="+document.forms["myForm"]["contact_phone"].value+
-                "&description="+encodeURI(document.getElementById("description").value)+"&token="+token+LEADTYPE_ID+AD_CAMPAIN_ID;
-          const url = BASE_URL + "lead/";
-
-            console.log(data);
-
-          const response = await fetch(url, {
-                method: "POST",
-                cors: "no-cors",
-                headers: {
-                  "Accept": "*/*",
-                  "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-                },
-                body: data // body data type must match "Content-Type" header
-              });
-
-          return response.json();
-        }
-
-        function sendForm() {
-          if (! document.forms["myForm"].reportValidity()){
-            return false;
-          }
-          let x = document.forms["myForm"]["contact_name"].value;
-          let y = document.forms["myForm"]["contact_phone"].value;
-          if ( x == '' || y ==  '' ) {
-            document.getElementById('response').innerHTML = 'fill the form';
-            document.getElementById('response').style.display = "block";
-            return false;
-          }
-          getToken()
-            .then((json) => {
-                token = json?.token;
-                makeRequest(token)
-                  .then((text)=>{
-                    document.getElementById('response').innerHTML = "Thank you for the feedback. Your message get number:" + text?.data?.id;
-                    document.forms["myForm"].style.display = 'none';
-                    document.getElementById('response').style.display = "block";
-                    return true;
-                  }).catch (err => {
-                    document.getElementById('response').innerHTML = "Post lead error: " + err;
-                    document.getElementById('response').style.display = "block";
-                    return false;
-                  })})
-            .catch(err => {
-                document.getElementById('response').innerHTML = 'Get token error';
-                document.getElementById('response').style.display = "block";
-                return false;
-            });
-        }
-
         </script>
-  </head>
-  <body>
-    <div class="container">
-      <h2 id="title_cap" class="brand-title"></h2>
-      <form name="myForm">
-        <p>
-          <div id="name_cap" for="contact_name" name_text="Name:"></div>
-          <input id="contact_name" type="text" name="contact_name" placeholder="3 letter min" required minlength="3" maxlength="40">
-        </p>
-        <p>
-          <div id="phone_cap" for="contact_phone"></div>
-          <input id="contact_phone" type="tel" name="contact_phone" placeholder="+...." required minlength="8" maxlength="16" pattern="\+\d{8,16}">
-        </p>
-        <p>
-          <div id="desc_cap" for="description"></div>
-          <textarea id="description" type="textarea" name="description"  form="myForm"> </textarea>
-        </p>
-        <button type="button" onClick="sendForm()">Submit</button>
-      </form>
-      <p id="response" onclick="closeResponse();" > </p>
-      <button id="close-button" onclick="window.parent.postMessage('close', '*')">x</button>
-    </div>
-    <script>
-        const S_NAME = urlParams.get("s_name") ? urlParams.get("s_name") : 'Name:';
-        const S_PHONE = urlParams.get("s_phone") ? urlParams.get("s_phone") : 'Phone:';
-        const S_DESC = urlParams.get("s_desc") ? urlParams.get("s_desc") : 'Description:';
-        const S_TITLE = urlParams.get("s_title") ? urlParams.get("s_title") : 'Query form:';
-
-        document.getElementById('name_cap')?.setAttribute('s_name', S_NAME);
-        document.getElementById('phone_cap')?.setAttribute('s_phone', S_PHONE);
-        document.getElementById('desc_cap')?.setAttribute('s_desc', S_DESC);
-        document.getElementById('title_cap')?.setAttribute('s_title', S_TITLE);
-    </script>
-  </body>
+    </body>
 </html>
-
-
-<!-- <p>
-  <caption for="contact_email">Email:</caption> <input id="contact_email" type="email" name="contact_email" placeholder="" required minlength="6" maxlength="20" pattern="\w{1,20}@\w{1,20}.\w{2,4}">
-</p>         -->
-<!-- check an emailwith regex :
-const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-let email = "example@example.com";
-let result = regex.test(email); -->

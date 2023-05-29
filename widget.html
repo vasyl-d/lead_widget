@@ -14,10 +14,6 @@
   --s_width: 90%;
   --s_height: 90%;
   --s_shadow: 0.3rem;
-  --s_name: "Name:";
-  --s_phone: "Phone:";
-  --s_description: "Description";
-  --s_title: "Query form";
 }
 
 input, textarea {
@@ -126,14 +122,17 @@ button:hover {
 #title_cap::after {
  content: attr(s_title);
 }
+#submit_cap::after {
+ content: attr(s_submit);
+}
 </style>
        <script>
         const BASE_URL = "https://api.remonline.app/";
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString); // doesn't work in IE, but who cares ;)
-        const API_KEY = urlParams.get("api_key") ? urlParams.get("api_key"): '237a1231fe9b4a13b66e5389598b9d85';
-        const LEADTYPE_ID = urlParams.get("lead_type") ? urlParams.get("lead_type") : 74157;
-        const AD_CAMPAIN_ID = urlParams.get("ad_compain") ? urlParams.get("ad_compain") : 345729;
+        const API_KEY = urlParams.get("api_key") || '';
+        const LEADTYPE_ID = urlParams.get("lead_type") || '';
+        const AD_CAMPAIN_ID =  urlParams.get("ad_compain") || '';
 
 
         function closeResponse(){
@@ -221,21 +220,23 @@ button:hover {
           <div id="desc_cap" for="description"></div>
           <textarea id="description" type="textarea" name="description" placeholder="your message" form="myForm"> </textarea>
         </p>
-        <button type="button" onClick="sendForm()">Submit</button>
+        <button type="button" onClick="sendForm()"><div id="submit_cap" for="submit"></div></button>
       </form>
       <p id="response" onclick="closeResponse();" > </p>
       <button id="close-button" onclick="window.parent.postMessage('close', '*')">x</button>
     </div>
     <script>
-        const S_NAME = urlParams.get("s_name")? urlParams.get("s_name") : 'Name:';
-        const S_PHONE = urlParams.get("s_phone")? urlParams.get("s_phone") : 'Phone:';
-        const S_DESC = urlParams.get("s_desc")? urlParams.get("s_desc") : 'Description:';
-        const S_TITLE = urlParams.get("s_title")? urlParams.get("s_title") : 'Query form:';
+        const S_NAME = urlParams.get("s_name") || 'Name:';
+        const S_PHONE =  urlParams.get("s_phone") || 'Phone:';
+        const S_DESC =  urlParams.get("s_desc") || 'Description:';
+        const S_TITLE =  urlParams.get("s_title") || 'Query form:';
+        const S_SUBMIT = urlParams.get("s_submit") || 'Submit';
 
         document.getElementById('name_cap')?.setAttribute('s_name', S_NAME);
         document.getElementById('phone_cap')?.setAttribute('s_phone', S_PHONE);
         document.getElementById('desc_cap')?.setAttribute('s_desc', S_DESC);
         document.getElementById('title_cap')?.setAttribute('s_title', S_TITLE);
+        document.getElementById('submit_cap')?.setAttribute('s_submit', S_SUBMIT);
     </script>
   </body>
 </html>

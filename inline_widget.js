@@ -14,14 +14,16 @@ var wrgsv = {
         const sTitle = wg.getAttribute('data-s-title');
         const sPhone = wg.getAttribute('data-s-phone');
         const sDesc = wg.getAttribute('data-s-desc');
+        const sSubmit = wg.getAttribute('data-s-submit');
 
-        const API_KEY = apiKey ? '?api_key='+apiKey: '';
-        const LEAD_TYPE = leadType ? '&lead_type='+leadType : '';
-        const AD_COMPAIN = ad_compain ? '&ad_compain='+ad_compain : '';
-        const S_NAME = sName ? '&s_name='+sName: '';
-        const S_TITLE = sTitle ? '&s_title='+sTitle : '';
-        const S_PHONE = sPhone ? '&s_phone='+sPhone : '';
-        const S_DESC = sDesc ? '&s_desc='+sDesc : '';
+        const API_KEY = apiKey ? `?api_key=${apiKey}`: '';
+        const LEAD_TYPE = leadType ? `&lead_type=${leadType}` : '';
+        const AD_COMPAIN = ad_compain ? `&ad_compain=${ad_compain}` : '';
+        const S_NAME = sName ? `&s_name=${sName}`: '';
+        const S_TITLE = sTitle ? `&s_title=${sTitle}` : '';
+        const S_PHONE = sPhone ? `&s_phone=${sPhone}` : '';
+        const S_DESC = sDesc ? `&s_desc=${sDesc}` : '';
+        const S_SUBMIT = sSubmit ? `&s_submit=${sSubmit}` : '';
 
         // если идентификатор отсутствует, то будем использовать
         // идентификатор HTML элемента для размещения виджета по умолчанию (т.е. "wrgsv")
@@ -72,13 +74,13 @@ var wrgsv = {
             // styleFrame.width = "50vw";
             // styleFrame.height = "28em";
             styleFrame.border = "None";
-            iframe.src = this.url_wiget+API_KEY+LEAD_TYPE+AD_COMPAIN+S_TITLE+S_NAME+S_PHONE+S_DESC;
+            iframe.src = this.url_wiget+API_KEY+LEAD_TYPE+AD_COMPAIN+S_TITLE+S_NAME+S_PHONE+S_DESC+S_SUBMIT;
             el.appendChild(iframe);
             }
         }
         // если на странице не существует HTML элемента с указаным идентификатором
         // выводим сообщение: блок с идентификатором id="id" отсутствует
-        else { console.log('The specified block id="'+ID+'" is missing'); }
+        else { console.log(`The specified block id="${ID}" is missing`); }
     },
 };
 (function() {
