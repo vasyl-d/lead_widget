@@ -1,5 +1,5 @@
 <html>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <head>
     <style>
 
@@ -10,10 +10,10 @@
 } */
 
 :root {
-  font-size: 1rem;
+  /*font-size: 1em;*/
   --s_width: 90%;
   --s_height: 90%;
-  --s_shadow: 0.3rem;
+  --s_shadow: 0.3em;
   --s_name: "Name:";
   --s_phone: "Phone:";
   --s_description: "Description";
@@ -131,10 +131,9 @@ button:hover {
         const BASE_URL = "https://api.remonline.app/";
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString); // doesn't work in IE, but who cares ;)
-        const API_KEY = urlParams.get("api_key") ? urlParams.get("api_key"): '237a1231fe9b4a13b66e5389598b9d85';
-        const LEADTYPE_ID = urlParams.get("lead_type") ? urlParams.get("lead_type") : 74157;
-        const AD_CAMPAIN_ID = urlParams.get("ad_compain") ? urlParams.get("ad_compain") : 345729;
-
+        const API_KEY = urlParams?.get("api_key") || '';
+        const LEADTYPE_ID = urlParams?.get("lead_type") ? "&leadtype_id=" + urlParams?.get("lead_type") : '';
+        const AD_CAMPAIN_ID = urlParams?.get("ad_compain") ? "&ad_compain_id=" + urlParams?.get("ad_compain") : '';
 
         function closeResponse(){
           window.parent.postMessage('close', '*');
@@ -154,9 +153,10 @@ button:hover {
 
         async function makeRequest(token){
           const data = "contact_name="+document.forms["myForm"]["contact_name"].value+"&contact_phone="+document.forms["myForm"]["contact_phone"].value+
-                "&description="+encodeURI(document.getElementById("description").value)+"&leadtype_id="+LEADTYPE_ID+"&ad_compain_id="+AD_CAMPAIN_ID+
-                "&token="+token;
+                "&description="+encodeURI(document.getElementById("description").value)+"&token="+token+LEADTYPE_ID+AD_CAMPAIN_ID;
           const url = BASE_URL + "lead/";
+
+            console.log(data);
 
           const response = await fetch(url, {
                 method: "POST",
@@ -215,11 +215,11 @@ button:hover {
         </p>
         <p>
           <div id="phone_cap" for="contact_phone"></div>
-          <input id="contact_phone" type="tel" name="contact_phone" placeholder="+380" required minlength="8" maxlength="16" pattern="\+\d{8,16}">
+          <input id="contact_phone" type="tel" name="contact_phone" placeholder="+...." required minlength="8" maxlength="16" pattern="\+\d{8,16}">
         </p>
         <p>
           <div id="desc_cap" for="description"></div>
-          <textarea id="description" type="textarea" name="description" placeholder="your message" form="myForm"> </textarea>
+          <textarea id="description" type="textarea" name="description"  form="myForm"> </textarea>
         </p>
         <button type="button" onClick="sendForm()">Submit</button>
       </form>
@@ -227,10 +227,10 @@ button:hover {
       <button id="close-button" onclick="window.parent.postMessage('close', '*')">x</button>
     </div>
     <script>
-        const S_NAME = urlParams.get("s_name")? urlParams.get("s_name") : 'Name:';
-        const S_PHONE = urlParams.get("s_phone")? urlParams.get("s_phone") : 'Phone:';
-        const S_DESC = urlParams.get("s_desc")? urlParams.get("s_desc") : 'Description:';
-        const S_TITLE = urlParams.get("s_title")? urlParams.get("s_title") : 'Query form:';
+        const S_NAME = urlParams.get("s_name") ? urlParams.get("s_name") : 'Name:';
+        const S_PHONE = urlParams.get("s_phone") ? urlParams.get("s_phone") : 'Phone:';
+        const S_DESC = urlParams.get("s_desc") ? urlParams.get("s_desc") : 'Description:';
+        const S_TITLE = urlParams.get("s_title") ? urlParams.get("s_title") : 'Query form:';
 
         document.getElementById('name_cap')?.setAttribute('s_name', S_NAME);
         document.getElementById('phone_cap')?.setAttribute('s_phone', S_PHONE);

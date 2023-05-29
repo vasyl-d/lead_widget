@@ -7,7 +7,7 @@ var wrgsv = {
     init: function(id, api_key, lead_type, ad_compain) { 
         const API_KEY = api_key ? '?api_key='+api_key: '';
         const LEAD_TYPE = lead_type ? '&lead_type='+lead_type : '';
-        const AD_COMPAIN =ad_compain ? '&ad_compain='+ad_compain : '';
+        const AD_COMPAIN = ad_compain ? '&ad_compain='+ad_compain : '';
 
         // если идентификатор отсутствует, то будем использовать 
         // идентификатор HTML элемента для размещения виджета по умолчанию (т.е. "wrgsv")  
@@ -47,13 +47,22 @@ var wrgsv = {
     let wg = document.getElementById('wrgsv-widget');
     let apiKey = wg.getAttribute('data-widget-key');
     let leadType = wg.getAttribute('data-lead-type'); //74157
+    let ad_compain = wg.getAttribute('data-ad-compain'); //345729
     if (!wg || !apiKey || !leadType) {
         return false;
     }
     document.getElementsByTagName('body')[0].appendChild(dv);
     var btn = document.createElement('button');
     btn.style = "display:block; position:absolute; bottom:4em; right:4em; z-index:1000; width:10em; height:3em; border-radius:0.5em; background-color:lightgreen;";
-    btn.setAttribute("onclick","wrgsv.init('wrgsv','"+apiKey+"', '"+leadType+"', '345729')");
+    btn.setAttribute("onclick","wrgsv.init('wrgsv','"+apiKey+"', '"+leadType+"', '"+ad_compain+"')");
     btn.innerText = 'Open widget';
     document.getElementsByTagName('body')[0].appendChild(btn);
+
+    window.addEventListener('message', function(event) {
+        if (event.data === 'close') {
+          // Close the iframe
+          var iframe = document.getElementById('iframe');
+          iframe.parentNode.removeChild(iframe);
+        }
+      }, false);
 })();
