@@ -1,0 +1,53 @@
+<html>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <head>
+        <style>
+        @media (min-width: 768px) and (max-width: 1024px) {
+            :root {
+              font-size:18pt;
+            }
+          }
+        @media (max-width: 767px) {
+            :root {
+              font-size:20pt;
+            }
+          }
+        </style>
+    </head>
+    <body>
+        <h1>RO Lead Form</h1>
+        <script type="text/javascript">
+            //скрипт размещаем в body
+            (function() {
+                var script = document.createElement('script');
+                script.type = 'text/javascript'; script.async = true;
+                script.src = 'http://127.0.0.1:3000/full_text_widget.js';
+                script.id = 'wrgsv-widget';
+                script.setAttribute('data-widget-key', '237a1231fe9b4a13b66e5389598b9d85');
+                script.setAttribute('data-lead-type', '74157');
+                script.setAttribute('data-ad-compain', '345729');
+                script.setAttribute('data-s-title', 'Запрос на услуги');
+                script.setAttribute('data-s-name', 'Имя:');
+                script.setAttribute('data-s-phone', 'Телефон:');
+                script.setAttribute('data-s-desc', 'Ваш вопрос:');
+                script.setAttribute('data-s-submit', 'Отправить');
+                document.getElementsByTagName('head')[0].appendChild(script);
+            })();
+            </script>
+        <!--Место для размещения виджета, если нужна позиция не по центру - настраивать тут ;) -->
+        <div id="wrgsv" style="z-index: 1000; position: absolute; left:50%; top: 50%; transform: translate(-50%, -50%);"></div>
+         <!--Если наи нужна кнопка для октытия формы: -->
+        <button onclick="wrgsv.init('wrgsv')" style="display:block;  width:15rem; height:3rem; border-radius:0.5rem; background-color:lightgreen; border: 0.1 solid lightgrey;">
+        <p>Создать обращение</p>
+        </button>
+
+         <script>
+            //если надо открыть форму сразу, без нажатия кнопки
+            document.onreadystatechange = function(){
+                    if(document.readyState === 'complete'){
+                    wrgsv.init('wrgsv');
+                    }
+                }
+        </script>
+    </body>
+</html>

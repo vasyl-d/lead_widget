@@ -1,0 +1,31 @@
+<html>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <head></head>
+    <body>
+        <div id="iframe-container"></div>
+        <script>
+        // Create the iframe element
+        var iframe = document.createElement('iframe');
+
+        // Set attributes for the iframe
+        iframe.setAttribute('src', 'about:blank'); // Set the initial src attribute
+        iframe.setAttribute('width', '400'); // Set the width attribute
+        iframe.setAttribute('height', '300'); // Set the height attribute
+
+        // Set the code to be placed inside the iframe
+        var iframeCode = '<html><head></head><body><h1>Hello, World!</h1></body></html>';
+
+        // Write the code to the iframe document
+        iframe.addEventListener('load', function() {
+        var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        iframeDoc.open();
+        iframeDoc.write(iframeCode);
+        iframeDoc.close();
+        });
+
+        // Append the iframe to the desired location on the page
+        var container = document.getElementById('iframe-container');
+        container.appendChild(iframe);
+        </script>
+</body>
+</html>
