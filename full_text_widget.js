@@ -13,8 +13,8 @@ var wrgsv = {
         const sPhone = wg.getAttribute('data-s-phone').toUpperCase();
         const sDesc = wg.getAttribute('data-s-desc').toUpperCase();
         const sSubmit = wg.getAttribute('data-s-submit').toUpperCase();
-
-        var iframeHTML = `
+/** @type {*} */
+var iframeHTML = `
             <html>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <head>
