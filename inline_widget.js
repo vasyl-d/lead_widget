@@ -1,12 +1,15 @@
+//version with uploading side html file with widget code
+
+const iframeId = 'leadIframe';
 var wrgsv = {
     // идентификатор HTML элемента в который будет размещен виджет
-    idBox: 'wrgsv',
+    idBox: 'leadform-place',
     // путь до страницы возвращающей виджет
-    url_wiget: 'https://vasylD.pythonanywhere.com/static/ROwidget/widget.html',
+    url_wiget: './widget.html',
     // путь до страницы стилей виджета
     init: function(id) {
         const ID = id ? id : this.idBox;
-        const wg = document.getElementById('wrgsv-widget');
+        const wg = document.getElementById('rolead-widget');
         const apiKey = wg.getAttribute('data-widget-key');
         const leadType = wg.getAttribute('data-lead-type'); //74157
         const ad_compain = wg.getAttribute('data-ad-compain'); //345729
@@ -16,48 +19,51 @@ var wrgsv = {
         const sDesc = wg.getAttribute('data-s-desc');
         const sSubmit = wg.getAttribute('data-s-submit');
 
-        const API_KEY = apiKey ? `?api_key=${apiKey}`: '';
-        const LEAD_TYPE = leadType ? `&lead_type=${leadType}` : '';
-        const AD_COMPAIN = ad_compain ? `&ad_compain=${ad_compain}` : '';
-        const S_NAME = sName ? `&s_name=${sName}`: '';
-        const S_TITLE = sTitle ? `&s_title=${sTitle}` : '';
-        const S_PHONE = sPhone ? `&s_phone=${sPhone}` : '';
-        const S_DESC = sDesc ? `&s_desc=${sDesc}` : '';
-        const S_SUBMIT = sSubmit ? `&s_submit=${sSubmit}` : '';
+        sessionStorage.setItem("api_key", apiKey);
+        sessionStorage.setItem("lead_type", leadType);
+        sessionStorage.setItem("ad_compain", ad_compain);
+        sessionStorage.setItem("s_name", sName);
+        sessionStorage.setItem("s_phone", sPhone);
+        sessionStorage.setItem("s_desc", sDesc);
+        sessionStorage.setItem("s_submit", sSubmit);
+        sessionStorage.setItem("s_title", sTitle);
 
         // если идентификатор отсутствует, то будем использовать
-        // идентификатор HTML элемента для размещения виджета по умолчанию (т.е. "wrgsv")
+        // идентификатор HTML элемента для размещения виджета по умолчанию (т.е. "leadform-place")
         // setup for adative size
-        var phoneMediaQuery = '  \
-            @media (min-width: 1025px)  { \
-                #iframe { \
-                    width: 40vw; height:24em; font-size:18pt; } \
-            } \
-            @media (min-width: 768px) and (max-width: 1024px)  { \
-                #iframe { \
-                    width: 70vw; height:21em; font-size:20pt; }\
-            } \
-            @media (max-width: 767px) { \
-                #iframe { \
-                    width: 90vw; height:19em; font-size:22pt; }\
-            }\
-          ';
+        // var phoneMediaQuery = '  \
+        //     @media (min-width: 1025px)  { \
+        //         #iframe { \
+        //             width: 40vw; height:24em; font-size:18pt; } \
+        //         #fl {color: red;}\
+        //     } \
+        //     @media (min-width: 768px) and (max-width: 1024px)  { \
+        //         #iframe { \
+        //             width: 70vw; height:21em; font-size:20pt; }\
+        //         #fl {color: red;}\
+        //     } \
+        //     @media (max-width: 767px) { \
+        //         #iframe { \
+        //             width: 90vw; height:19em; font-size:22pt; }\
+        //         #fl {color: red;}\
+        //     }\
+        //   ';
 
-        let head = document.head || document.getElementsByTagName('head')[0];
+        // let head = document.head || document.getElementsByTagName('head')[0];
 
-        let st = document.getElementsByTagName('style')[0] || document.createElement('style');
+        // let st = document.getElementsByTagName('style')[0] || document.createElement('style');
 
-        if (st.styleSheet) {
-            st.styleSheet.cssText = phoneMediaQuery;
-        } else {
-            st.appendChild(document.createTextNode(phoneMediaQuery));
-        }
+        // if (st.styleSheet) {
+        //     st.styleSheet.cssText = phoneMediaQuery;
+        // } else {
+        //     st.appendChild(document.createTextNode(phoneMediaQuery));
+        // }
 
-        head.appendChild(st);
+        // head.appendChild(st);
 
         let el = document.getElementById(ID);
         if (el) {
-            ifr = document.getElementById("iframe");
+            ifr = document.getElementById(iframeId);
             if (ifr) {
                 if (el.style.display === "none") {
                     el.style.display = "block";
@@ -65,16 +71,16 @@ var wrgsv = {
                     el.style.display = "none";
                 }
             } else {
-            const iframe = document.createElement("iframe");
-            iframe.id = "iframe"
+            const iframe = document.createElement('iframe');
+            iframe.id = iframeId;
             let styleFrame = iframe.style;
             iframe.setAttribute("scrolling", "no");
             iframe.addEventListener("load", () => styleFrame.display = "block" );
             styleFrame.display="None";
-            // styleFrame.width = "50vw";
-            // styleFrame.height = "28em";
+            styleFrame.width = "32em";
+            styleFrame.height = "32em";
             styleFrame.border = "None";
-            iframe.src = this.url_wiget+API_KEY+LEAD_TYPE+AD_COMPAIN+S_TITLE+S_NAME+S_PHONE+S_DESC+S_SUBMIT;
+            iframe.src = this.url_wiget;
             el.appendChild(iframe);
             }
         }
@@ -87,7 +93,7 @@ var wrgsv = {
     window.addEventListener('message', function(event) {
         if (event.data === 'close') {
           // Close the iframe
-          var iframe = document.getElementById('iframe');
+          var iframe = document.getElementById(iframeId);
           iframe.parentNode.removeChild(iframe);
         }
       }, false);

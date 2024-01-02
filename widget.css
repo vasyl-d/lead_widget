@@ -1,0 +1,118 @@
+
+:root {
+    /* font-size: 1rem; */
+    --s_width: 30em;
+    --s_height: 30em;
+    --s_shadow: 0.3rem;
+  }
+  
+  input, textarea {
+    caret-color: red;
+  }
+  
+  .container {
+    position: relative;
+    margin: 0 auto 0 auto;
+    width: var(--s_width);
+    height: var(--s_height);
+    border-radius: 1em;
+    padding: 1em;
+    box-sizing: border-box;
+    background: #ecf0f3;
+    box-shadow: var(--s_shadow) var(--s_shadow) var(--s_shadow) #cbced1, var(--s_shadow) var(--s_shadow) var(--s_shadow) white;
+  }
+  
+  #response {
+      position: relative;
+      z-index: 1001;
+      margin: 0 auto 0 auto;
+      width: 20em;
+      height: 3em;
+      padding: 1em;
+      font-size: 1em;
+      border-radius: 1em;
+      margin-top: 0.5em;
+      background: #ecf0f3;
+      color: brown;
+      box-shadow: var(--s_shadow) var(--s_shadow) var(--s_shadow) #cbced1, calc(-1*var(--s_shadow)) calc(-1*var(--s_shadow)) var(--s_shadow) white;
+      display: none;
+  }
+  
+  .brand-title {
+    margin-top: 0.8em;
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: #1DA1F2;
+    /* letter-spacing: 0.1em;s */
+  }
+  
+  textarea, caption, input, button {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    resize: none;
+  }
+  
+  caption {
+      padding-left: 3em;
+  }
+  
+  input::placeholder {
+    color: gray;
+  }
+  
+  input, textarea  {
+    background: #ecf0f3;
+    padding: 1em;
+    padding-left: 2em;
+    height: 3em;
+    font-size: 1em;
+    border-radius: 1em;
+    margin-top: 0.5em;
+    box-shadow: inset var(--s_shadow) var(--s_shadow) var(--s_shadow) #cbced1, inset calc(-1*var(--s_shadow)) calc(-1*var(--s_shadow)) var(--s_shadow) white;
+  }
+  
+  button {
+    color: white;
+    margin-top: 20px;
+    background: #1DA1F2;
+    height: 3em;
+    border-radius: 1em;
+    cursor: pointer;
+    font-weight: 900;
+    box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+    transition: 0.5s;
+  }
+  
+  button:hover {
+    box-shadow: none;
+  }
+  
+  #close-button {
+    z-index: 2001;
+    width: 3em;
+    height: 3em;
+    position: absolute;
+    top: 0.1em; right: 1em;}
+  
+  #description {
+      height: 6em;
+  }
+  #name_cap::after {
+    content: attr(s_name);
+  }
+  #phone_cap::after {
+    content: attr(s_phone);
+  }
+  #desc_cap::after {
+    content: attr(s_desc);
+  }
+  #title_cap::after {
+   content: attr(s_title);
+  }
+  #submit_cap::after {
+   content: attr(s_submit);
+  }
