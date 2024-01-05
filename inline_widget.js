@@ -9,7 +9,7 @@ var wrgsv = {
     // путь до страницы стилей виджета
     init: function(id) {
         const ID = id ? id : this.idBox;
-        const wg = document.getElementById('rolead-widget');
+        const wg = document.getElementById('rolead-widget'); 
         const apiKey = wg.getAttribute('data-widget-key');
         const leadType = wg.getAttribute('data-lead-type'); //74157
         const ad_compain = wg.getAttribute('data-ad-compain'); //345729

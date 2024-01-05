@@ -1,0 +1,122 @@
+<html>
+
+<body>
+
+    <form method='post' class="form-control " action="https://api.remonline.app/lead/" id='leadForm' method="POST">
+        <input type="hidden" id="token" name="token" value="">
+
+        <div class="row">
+            <div class="col-lg-3 align-self-center">
+                <fieldset>
+                    <select id="description" name="description"
+                        class="form-control1 awesomplete awesomeControls right-radius" aria-label="Area"
+                        onchange="this.form.click()">
+                        <option selected hidden>Select service </option>
+                        <option value="Dishwasher Repair">Repair</option>
+                        <option value="Dishwasher General Service "> General Service </option>
+                        <option value="Dishwasher Deep Service ">Deep Service</option>
+                    
+                        <option value="Dishwasher Installation / Reinstallation">Installation / Reinstallation</option>
+        
+                    </select>
+                </fieldset>
+            </div>
+            <div class="col-lg-3 align-self-center">
+                <fieldset>
+                    <input for="contact_name" type="text" id="contact_name" name="contact_name" value=""
+                        class="searchText" class="form-control1 no-radius awesomplete awesomeControls required"
+                        placeholder="Your Name" autocomplete="on" required>
+                </fieldset>
+            </div>
+            <div class="col-lg-3 align-self-center">
+                <fieldset>
+                    <input for="contact_phone" type="tel" class="searchText"
+                        class="form-control1 search-input radius-textbox no-radius-left-none awesomplete awesomeControls left-radius required"
+                        id="contact_phone" name="contact_phone" value="" data-msg='Enter a valid 10 digit Mobile Number'
+                        data-exp='^\d{10}$' placeholder="Mobile Number" autocomplete="on" minlength="10" maxlength="10"
+                        required>
+                </fieldset>
+            </div>
+            <input type="number" id="branch_id" name="branch_id" value="152151" required hidden>
+    
+            <input type="number" id="leadtype_id" name="leadtype_id" value="234650" required hidden>
+
+            <input type="number" id="manager_id" name="manager_id" value="233657" required hidden>
+
+            <input type="number" id="ad_campaign_id" name="ad_campaign_id" value="402136" hidden>
+
+            <div class="col-lg-3">
+                <fieldset>
+                    <button type="submit"> Book Now</button>
+                    <div id="successMessage"></div>
+                    <div id="errorMessage"></div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+    <script>
+        // Function to fetch a new token using the token generation endpoint
+        async function fetchNewToken() {
+            const response = await fetch('https://api.remonline.app/token/new', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'api_key=53bc2b9a885a45e186c4470b4008d994'
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                return data.token;
+            } else {
+                throw new Error('Failed to generate token');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('leadForm').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            try {
+                const token = await fetchNewToken();
+                document.getElementById('token').value = token;
+
+                // Submit the form with the newly fetched token
+                const formData = new FormData(event.target);
+                const response = await fetch(event.target.action, {
+                    method: event.target.method,
+                    body: formData
+                });
+
+                // Handle the lead creation response
+                const responseData = await response.json();
+
+                if (responseData.success) {
+                    // Display success message
+
+                    document.getElementById('successMessage').textContent = "Thank you, We will get back you soon";
+                    document.getElementById('leadForm').reset(); // Clear form fields
+                } else {
+                    // Display error message
+                    document.getElementById('errorMessage').textContent = responseData.message || "Failed to create lead";
+                }
+            } catch (error) {
+                console.error(error);
+                // Display generic error message
+                document.getElementById('errorMessage').textContent = "An error occurred. Please try again.";
+            }
+        });
+
+        function openModal() {
+            document.getElementById('successMessage').style.display = 'block';
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+    </script>
+</body>
+
+</html>
